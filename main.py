@@ -2,6 +2,7 @@ import re
 data = open("data.txt")
 array = data.read().split("\n")
 
+# Step class
 class Step:
   def __init__(self, x, y):
     self.x = x
@@ -14,16 +15,16 @@ def isTree(line, x):
   return line[x] == '#'
 
 def travelWithStep(stepX, stepY):
-  x = 0
+  positionX = 0
   treeCount = 0
   for line in array[::stepY]:
     length = len(line)
-    if isTree(line, x):
+    if isTree(line, positionX):
       treeCount += 1
-    if x + stepX <= length - 1:
-      x += stepX
+    if positionX + stepX <= length - 1:
+      positionX += stepX
     else:
-      x = x + stepX - length
+      positionX = positionX + stepX - length
   return treeCount
 
 def main():
