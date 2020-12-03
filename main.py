@@ -1,31 +1,24 @@
 import re
 data = open("data.txt")
-lines = data.read().split("\n")
+array = data.read().split("\n")
+
+def isTree(line, x):
+  return line[x] == '#'
 
 def main():
-  validCount = 0
+  x = 0
+  treeCount = 0
+  step = 3
 
-  # def isValidEntry(x):
-  #   passwordLineParts = re.split('-| |:', x)
-  #   min = int(passwordLineParts[0])
-  #   max = int(passwordLineParts[1])
-  #   requiredChar = passwordLineParts[2]
-  #   password = passwordLineParts[4]
-  #   occurrence = password.count(requiredChar)
-  #   return min <= occurrence <= max:
+  for line in array:
+    length = len(line)
+    if isTree(line, x):
+      treeCount += 1
+    if x + step <= length - 1:
+      x += step
+    else:
+      x = x + step - length
+      
 
-  def isValidEntry(x):
-    passwordLineParts = re.split('-| |:', x)
-    min = int(passwordLineParts[0])
-    max = int(passwordLineParts[1])
-    requiredChar = passwordLineParts[2]
-    password = passwordLineParts[4]
-    return bool(password[min - 1] == requiredChar) != bool(password[max - 1] == requiredChar)
-
-  for x in lines:
-    if isValidEntry(x):
-      validCount += 1
-
-  print(validCount)
-
+  print(treeCount)
 main()
