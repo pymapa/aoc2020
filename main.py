@@ -1,4 +1,3 @@
-import re
 data = open("data.txt")
 array = data.read().split("\n")
 
