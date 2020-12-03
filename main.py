@@ -2,7 +2,6 @@ import re
 data = open("data.txt")
 array = data.read().split("\n")
 
-# Step class
 class Step:
   def __init__(self, x, y):
     self.x = x
