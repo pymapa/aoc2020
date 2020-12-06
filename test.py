@@ -1,18 +1,15 @@
 import unittest
 
-from planeticket import convertToBindary, calculateSeatId
+from planeticket import getPositiveAnswers
 class PlaneticketTest(unittest.TestCase):
 
-  def test_convertToBinary(self):
+  def test_getPositiveAnswers(self):
     """
-    Test string to binary converter
+    Test counting positive answers
     """
-    self.assertEqual(convertToBindary('BFBBBFFRRL'), 0b1011100110)
-    self.assertEqual(convertToBindary('BFBBBFF'), 0b1011100)
-    self.assertEqual(convertToBindary('LLR'), 0b001)
+    group = 'abc\naabcd\nfgbc'
+    self.assertEqual(getPositiveAnswers(group), ['b', 'c'])
 
-  def test_calculateSeatId(self):
-    self.assertEqual(calculateSeatId(102, 4), 820)
 
 if __name__ == "__main__":
   unittest.main()

@@ -1,41 +1,20 @@
 import re
 file = open("data.txt")
 
-def convertToBindary(word):
-  binaryWord = ''
-  for c in word:
-    if c == 'F':
-      binaryWord += '0'
-    elif c == 'B':
-      binaryWord += '1'
-    elif c == 'L':
-      binaryWord += '0'
-    elif c == 'R':
-      binaryWord += '1'
-  return int(binaryWord, 2)
-
-def calculateSeatId(row, column):
-  return row * 8 + column
-
-def nextSeatEmpty(passportIds, index):
-  return passportIds[index] + 1 != passportIds[index + 1]
+def getPositiveAnswers(group):
+  rows = group.split("\n")
+  answers = rows[0]
+  for row in rows:
+    answers = [value for value in row if value in answers]
+  return sorted(set(answers))
 
 def main():
-  passports = file.read().split("\n")
-  passportIds = []
-  passportsDecoded = []
-  for passport in passports:
-    row = passport[:7]
-    column = passport[7:]
-    rowBinary = convertToBindary(row)
-    columnBinary = convertToBindary(column)
-    passportsDecoded.append((rowBinary, columnBinary))
-    passportIds.append(calculateSeatId(rowBinary, columnBinary))
+  groups = file.read().split("\n\n")
+  sum = 0
+  for group in groups:
+    sum += len(getPositiveAnswers(group))
 
-  sortedIds = sorted(passportIds)
-  for i in range(len(sortedIds)):
-    if nextSeatEmpty(sortedIds, i):
-      print(sortedIds[i])
+  print(sum)
 
 if __name__ == "__main__":
   main()
