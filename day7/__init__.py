@@ -1,5 +1,5 @@
 import re
-file = open("data.txt")
+file = open("data_day7.txt")
 
 class Bag:
   def __init__(self, name='root', bags=None):
