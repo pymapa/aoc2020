@@ -25,6 +25,8 @@ def nop(program, arg):
 def runInstruction(program, instruction):
   op = re.findall(r'^\w+', instruction)[0]
   arg = int(re.findall(r'-?\d+', instruction)[0])
+  if program.pointer == 15:
+    print(instruction)
   operations = {
     'acc' : acc,
     'jmp' : jmp,
@@ -32,19 +34,54 @@ def runInstruction(program, instruction):
   }
   operations[op](program, arg)
 
+def runProgram(instructions):
+  p = Program()
+  history = []
+  p = Program()
+  looping = False
+  while p.pointer < len(instructions):
+    if p.pointer in history:
+      looping = True
+      break
+    history.append(p.pointer)
+    runInstruction(p, instructions[p.pointer])
+  if not looping:
+    print(p.accumulator)
+  return looping
+
+def changeJmpToNop(instruction):
+  return instruction.replace('jmp', 'nop')
+
+def changeNopToJmp(instruction):
+  return instruction.replace('nop', 'jmp')
+
 def main():
   print('running program...')
   instructions = file.read().split("\n")
 
-  history = []
-  p = Program()
-  while p.pointer < len(instructions):
-    if p.pointer in history:
-      break
-    history.append(p.pointer)
-    runInstruction(p, instructions[p.pointer])
+  for index, instruction in enumerate(instructions):
+    op = re.findall(r'^\w+', instruction)[0]
+    if op == 'nop':
+      instructions[index] = changeNopToJmp(instruction)
+      looping = runProgram(instructions)
+      if looping:
+        print('looping')
+        instructions[index] = changeJmpToNop(instruction)
+      else:
+        print('index ', index)
+        print('not looping')
+        break
+    if op == 'jmp':
+      instructions[index] = changeJmpToNop(instruction)
+      looping = runProgram(instructions)
+      if looping:
+        print('looping')
+        instructions[index] = changeNopToJmp(instruction)
+      else:
+        print('index ', index)
+        print('not looping')
+        break
 
-  print(p.accumulator)
 
 if __name__ == "__main__":
   main()
